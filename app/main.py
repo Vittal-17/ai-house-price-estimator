@@ -2,17 +2,21 @@ from fastapi import FastAPI
 from app.schemas import HouseData
 from app.predictor import predict_house_price
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 app = FastAPI(
-    title="California House Price Predictor API",
+    title="AI House Price Predictor API",
     version="1.0.0"
 )
 
+origins = os.getenv(
+    "ALLOWED_ORIGINS",
+    "http://localhost:5173,https://aihouseprice.vercel.app"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
